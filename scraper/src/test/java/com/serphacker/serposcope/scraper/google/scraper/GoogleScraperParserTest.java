@@ -1,6 +1,7 @@
 package com.serphacker.serposcope.scraper.google.scraper;
 
 import com.serphacker.serposcope.scraper.ResourceHelper;
+import com.serphacker.serposcope.scraper.google.GoogleScrapSearch;
 import com.serphacker.serposcope.scraper.http.ScrapClient;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -41,7 +42,8 @@ public class GoogleScraperParserTest {
             ScrapClient http = mock(ScrapClient.class);
             when(http.getContentAsString()).thenReturn(content);
             GoogleScraper scraper = new GoogleScraper(http, null);
-            assertEquals(OK, scraper.parseSerp(new ArrayList<>()));
+            GoogleScrapSearch search = new GoogleScrapSearch();
+            assertEquals(OK, scraper.parseSerp(search, new ArrayList<>()));
             assertFalse(scraper.hasNextPage());
         }
 
@@ -70,8 +72,9 @@ public class GoogleScraperParserTest {
             ScrapClient http = mock(ScrapClient.class);
             when(http.getContentAsString()).thenReturn(serpHtml);
             GoogleScraper scraper = new GoogleScraper(http, null);
+            GoogleScrapSearch search = new GoogleScrapSearch();
             List<String> urls = new ArrayList<>();
-            assertEquals(OK, scraper.parseSerp(urls));
+            assertEquals(OK, scraper.parseSerp(search, urls));
             assertTrue(scraper.hasNextPage());
 
             assertEquals(expectedUrls, urls.subList(0, Math.min(urls.size(), expectedUrls.size())));

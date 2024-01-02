@@ -36,7 +36,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="/">
-                        SERPOSCOPE 
+						${i18n("label.serposcope")}
                         <span class="version" data-toggle="tooltip" title="${global.version}" data-placement="bottom"
                             >${global.version.shortString()}</span>
                     </a>
@@ -54,25 +54,11 @@
                         <a href="#" id="btn-run-modules" title="${i18n("label.checkRanksDesc")}" data-toggle="tooltip" data-placement="bottom" >
                            ${i18n("label.checkRanks")}
                         </a>
-                    </li>
-                    <#if global.update.hasNewVersion() >
-                    <li>
-                        <a href="https://serposcope.serphacker.com/?pk_campaign=serposcope" id="btn-new-version" target="_blank"
-                            data-toggle="tooltip" data-placement="bottom" tool title="${i18n("label.newVersionAvailable")}" >
-                            ${i18n("label.newVersion")} !
-                        </a>                    
-                    </li>
-                    </#if>                    
+                    </li>              
                     </#if>
                 </ul>      
 
                 <ul class="hidden-xs nav navbar-top-links navbar-right">
-                    <li>
-                        <a href="https://serposcope.serphacker.com/doc/?pk_campaign=serposcope" target="_blank" >docs</a>
-                    </li>                    
-                    <li>
-                        <a href="https://forum.serphacker.com/?pk_campaign=serposcope" target="_blank" >support</a>
-                    </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             ${i18n("label.account")} <span class="caret"></span>
@@ -91,15 +77,6 @@
                 <div class="navbar-default sidebar" role="navigation">
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
-                            <li>
-                                <!-- 
-                                    Feel free to remove this add, but please, consider making a donation : 
-                                    https://www.paypal.com/cgi-bin/webscr?hosted_button_id=3YGPEJUYC96RL&cmd=_s-xclick
-                                -->
-                                <a id="side-banner" href="https://stats.serphacker.com/serposcope/${global.version}/" >
-                                    <img src="https://stats.serphacker.com/serposcope/${global.version}/banner.jpg" />
-                                </a>
-                            </li>
                             <#noescape>${sideMenu}</#noescape>
                         </ul>
                     </div>

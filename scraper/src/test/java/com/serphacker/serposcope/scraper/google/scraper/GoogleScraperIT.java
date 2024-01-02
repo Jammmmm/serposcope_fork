@@ -110,7 +110,7 @@ public class GoogleScraperIT {
     @Test
     public void testDebugDump(){
         GoogleScraper scraper = new GoogleScraper(null, null);
-        scraper.debugDump("filename", "test data 2");
+        scraper.debugDump("", true, "filename", "test data 2");
     }
 
     

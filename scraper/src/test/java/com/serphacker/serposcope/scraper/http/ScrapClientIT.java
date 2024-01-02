@@ -54,6 +54,7 @@ public class ScrapClientIT {
             Assert.assertThat(cli.getContentAsString(), CoreMatchers.containsString(ScrapClient.DEFAULT_USER_AGENT));
         }
         
+        cli.setUseragentType("");
         cli.setUseragent("lolua");
         {
             cli.get("http://httpbin.org/user-agent");
@@ -71,7 +72,8 @@ public class ScrapClientIT {
             cli.get("http://httpbin.org/user-agent");
             Assert.assertThat(cli.getContentAsString(), CoreMatchers.containsString("lolua"));
         }
-        
+
+        cli.setUseragentType("");
         cli.setUseragent(null);
         {
             cli.get("http://httpbin.org/user-agent");

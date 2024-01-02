@@ -75,7 +75,8 @@ public class GoogleScraperTest {
         when(http.getContentAsString()).thenReturn("");
 
         GoogleScraper scraper = new GoogleScraper(http, null);
-        assertEquals(ERROR_NETWORK, scraper.parseSerp(new ArrayList<>()));
+        GoogleScrapSearch search = new GoogleScrapSearch();
+        assertEquals(ERROR_NETWORK, scraper.parseSerp(search, new ArrayList<>()));
     }
 
     @Test

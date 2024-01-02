@@ -84,9 +84,14 @@ serposcope.HomeController = function () {
                     if(typeof(data.progress) !== "undefined"){
                         $('.home-task-progress .progress-bar').css('width', data.progress + '%');
                         $('.home-task-progress .progress-bar span').html(data.progress + '%');
-                        if(data.progress != 100){
+                        if(data.progress < 100){
                             setTimeout(updateProgressBar, 3000);
                         }
+                        else if (data.progress >= 100)
+                        {
+							$('.home-task-progress .progress-bar').removeClass ('active');
+							$('.home-task-progress .progress-bar span').html('Tasks Completed');
+						}
                     }
                     
                 }

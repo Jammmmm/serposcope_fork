@@ -54,6 +54,28 @@ public class GoogleSettingsController extends BaseController {
         @Param("pages") Integer pages, @Param("result-per-page") Integer resultPerPage,
         @Param("min-pause") Integer minPause, @Param("max-pause") Integer maxPause,
         @Param("maxThreads") Integer maxThreads, @Param("fetchRetry") Integer fetchRetry,
+        @Param("uaDesktop") String optUADesktop, @Param("uaDesktop") String uaDesktop,
+        @Param("uaDesktopDefault") String optUADesktopDefault, @Param("uaDesktopDefault") String uaDesktopDefault,
+        @Param("uaMobile") String optUAMobile, @Param("uaMobile") String uaMobile,
+        @Param("uaMobileDefault") String optUAMobileDefault, @Param("uaMobileDefault") String uaMobileDefault,
+        @Param("elementsRemoveDesktop") String optElementsRemoveDesktop, @Param("elementsRemoveDesktop") String elementsRemoveDesktop,
+        @Param("elementsRemoveMobile") String optElementsRemoveMobile, @Param("elementsRemoveMobile") String elementsRemoveMobile,
+        @Param("elementsRemoveDesktopDefault") String optElementsRemoveDesktopDefault, @Param("elementsRemoveDesktopDefault") String elementsRemoveDesktopDefault,
+        @Param("elementsRemoveMobileDefault") String optElementsRemoveMobileDefault, @Param("elementsRemoveMobileDefault") String elementsRemoveMobileDefault,
+        @Param("linksParseDesktop") String optLinksParseDesktop, @Param("linksParseDesktop") String linksParseDesktop,
+        @Param("linksParseMobile") String optLinksParseMobile, @Param("linksParseMobile") String linksParseMobile,
+        @Param("linksParseDesktopDefault") String optLinksParseDesktopDefault, @Param("linksParseDesktopDefault") String linksParseDesktopDefault,
+        @Param("linksParseMobileDefault") String optLinksParseMobileDefault, @Param("linksParseMobileDefault") String linksParseMobileDefault,
+        @Param("linkHasParentDesktop") String optLinkHasParentDesktop, @Param("linkHasParentDesktop") String linkHasParentDesktop,
+        @Param("linkHasParentMobile") String optLinkHasParentMobile, @Param("linkHasParentMobile") String linkHasParentMobile,
+        @Param("linkHasParentDesktopDefault") String optLinkHasParentDesktopDefault, @Param("linkHasParentDesktopDefault") String linkHasParentDesktopDefault,
+        @Param("linkHasParentMobileDefault") String optLinkHasParentMobileDefault, @Param("linkHasParentMobileDefault") String linkHasParentMobileDefault,
+        @Param("linkHasChildrenDesktop") String optLinkHasChildrenDesktop, @Param("linkHasChildrenDesktop") String linkHasChildrenDesktop,
+        @Param("linkHasChildrenMobile") String optLinkHasChildrenMobile, @Param("linkHasChildrenMobile") String linkHasChildrenMobile,
+        @Param("linkHasChildrenDesktopDefault") String optLinkHasChildrenDesktopDefault, @Param("linkHasChildrenDesktopDefault") String linkHasChildrenDesktopDefault,
+        @Param("linkHasChildrenMobileDefault") String optLinkHasChildrenMobileDefault, @Param("linkHasChildrenMobileDefault") String linkHasChildrenMobileDefault,
+        @Param("debugPath") String optDebugPath, @Param("debugPath") String debugPath,
+
         @Param("country") String country, @Param("datacenter") String datacenter,
         @Param("device") Integer device,
         @Param("local") String local, @Param("custom") String custom
@@ -84,7 +106,91 @@ public class GoogleSettingsController extends BaseController {
         if(fetchRetry != null){
             options.setFetchRetry(fetchRetry);
         }
-        
+
+        if(optUADesktop != null){
+            options.setUADesktop(optUADesktop);
+        }
+
+        if(optUADesktopDefault != null){
+            options.setUADesktopDefault(optUADesktopDefault);
+        }
+
+        if(optUAMobile != null){
+            options.setUAMobile(optUAMobile);
+        }
+
+        if(optUAMobileDefault != null){
+            options.setUAMobileDefault(optUAMobileDefault);
+        }
+
+        if(optElementsRemoveDesktop != null){
+            options.setElementsRemoveDesktop(optElementsRemoveDesktop);
+        }
+
+        if(optElementsRemoveMobile != null){
+            options.setElementsRemoveMobile(optElementsRemoveMobile);
+        }
+
+        if(optElementsRemoveDesktopDefault != null){
+            options.setElementsRemoveDesktopDefault(optElementsRemoveDesktopDefault);
+        }
+
+        if(optElementsRemoveMobileDefault != null){
+            options.setElementsRemoveMobileDefault(optElementsRemoveMobileDefault);
+        }
+
+        if(optLinksParseDesktop != null){
+            options.setLinksParseDesktop(optLinksParseDesktop);
+        }
+
+        if(optLinksParseMobile != null){
+            options.setLinksParseMobile(optLinksParseMobile);
+        }
+
+        if(optLinksParseDesktopDefault != null){
+            options.setLinksParseDesktopDefault(optLinksParseDesktopDefault);
+        }
+
+        if(optLinksParseMobileDefault != null){
+            options.setLinksParseMobileDefault(optLinksParseMobileDefault);
+        }
+
+        if(optLinkHasParentDesktop != null){
+            options.setLinkHasParentDesktop(optLinkHasParentDesktop);
+        }
+
+        if(optLinkHasParentMobile != null){
+            options.setLinkHasParentMobile(optLinkHasParentMobile);
+        }
+
+        if(optLinkHasParentDesktopDefault != null){
+            options.setLinkHasParentDesktopDefault(optLinkHasParentDesktopDefault);
+        }
+
+        if(optLinkHasParentMobileDefault != null){
+            options.setLinkHasParentMobileDefault(optLinkHasParentMobileDefault);
+        }
+
+        if(optLinkHasChildrenDesktop != null){
+            options.setLinkHasChildrenDesktop(optLinkHasChildrenDesktop);
+        }
+
+        if(optLinkHasChildrenMobile != null){
+            options.setLinkHasChildrenMobile(optLinkHasChildrenMobile);
+        }
+
+        if(optLinkHasChildrenDesktopDefault != null){
+            options.setLinkHasChildrenDesktopDefault(optLinkHasChildrenDesktopDefault);
+        }
+
+        if(optLinkHasChildrenMobileDefault != null){
+            options.setLinkHasChildrenMobileDefault(optLinkHasChildrenMobileDefault);
+        }
+
+        if(optDebugPath != null){
+            options.setDebugPath(optDebugPath);
+        }
+
         if(maxThreads != null){
             options.setMaxThreads(maxThreads);
         }

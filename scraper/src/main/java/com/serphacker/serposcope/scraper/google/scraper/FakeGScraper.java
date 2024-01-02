@@ -41,13 +41,7 @@ public class FakeGScraper extends GoogleScraper {
                 urls.add("http://www.site" + (position + 1) + ".com/" + options.getKeyword() + ".html");
             }
 
-            long pauseMS = options.getRandomPagePauseMS();
-            if (pauseMS > 0) {
-                LOG.debug("KW {} page {} sleeping {} ms interrupt={}",
-                    new Object[]{options.getKeyword(), page, pauseMS, Thread.currentThread().isInterrupted()}
-                );
-                Thread.sleep(pauseMS);
-            }
+			options.doRandomPagePause (true);
         }
         return new GoogleScrapResult(GoogleScrapResult.Status.OK, urls);
     }

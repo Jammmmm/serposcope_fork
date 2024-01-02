@@ -53,14 +53,8 @@ public class RandomGScraper extends GoogleScraper {
                 }                
                 urls.add(url);
             }
-            
-//            long pauseMS = options.getRandomPagePauseMS();
-//            if (pauseMS > 0) {
-//                LOG.debug("KW {} page {} sleeping {} ms interrupt={}",
-//                    new Object[]{options.getKeyword(), page, pauseMS, Thread.currentThread().isInterrupted()}
-//                );
-//                Thread.sleep(pauseMS);
-//            }
+
+			// doRandomPagePause (true);
         }
         
         Collections.shuffle(urls, random);

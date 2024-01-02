@@ -1,5 +1,23 @@
 # serposcope changelog
 
+## 2.16.0 - 2024-01-01
+* Forked from [original 2.x Serposcope](https://github.com/serphacker/serposcope). Although the code still refers to the project as Serposcope, the project has been renamed from "Serposcope" to "Serposcope Fork" to avoid confusion.
+* Updated version number from 2.15.0 to 2.16.0.
+* Fixed min/max pause range to work when only 1 page of results exists. A pause is now performed before every request, which unfortunately means there will be a pause before the first search is even performed.
+* Added options to customize the desktop and mobile user agents.
+* Added options to remove elements from the page before attempting to parse it for links.
+* Added options to customize the CSS selectors to parse links on the page.
+* Added options to only accept a link if its parent (anywhere in the tree) matches a specified set of CSS selectors.
+* Added options to only accept a link if its child (anywhere in the tree) matches a specified set of CSS selectors.
+* Added option to store scraped details and HTML (before and after removal of elements) into a directory.
+* Improved GoogleScraper::debugDump () function to allow for timestamped directory creation, as well as appending to files instead of overwriting.
+* Removed some parsing code that has been made redundant due to added options.
+* Fixed task progress status bar to display "Tasks Completed" when the task reaches 100%.
+* Disabled update checks.
+* Removed links to "docs" and "support" so the original author is not asked questions about this forked version.
+* Removed ad from sidebar.
+* Fixed build issues by adding dependenies javax.annotation-api and org.codehaus.plexus.plexus-utils, and updating org.jsoup dependency from version 1.10.2 to 1.16.2, and org.jsoup.safety.Whitelist to use org.jsoup.safety.Safelist instead.
+
 ## 2.14.0 - 2021-11-02
 
 * Fix mobile SERP parsing issue

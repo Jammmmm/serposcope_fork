@@ -20,8 +20,25 @@ public class GoogleSettings {
     int minPauseBetweenPageSec = 5;
     int maxPauseBetweenPageSec = 5;
     int maxThreads = 1;
-    int fetchRetry = 3;    
-    
+    int fetchRetry = 3;
+
+    String uaDesktop = "", uaDesktopDefault = "";
+    String uaMobile = "", uaMobileDefault = "";
+
+    String elementsRemoveDesktop = "", elementsRemoveDesktopDefault = "";
+	String elementsRemoveMobile = "", elementsRemoveMobileDefault = "";
+
+    String linksParseDesktop = "", linksParseDesktopDefault = "";
+    String linksParseMobile = "", linksParseMobileDefault = "";
+
+    String linkHasParentDesktop = "", linkHasParentDesktopDefault = "";
+    String linkHasParentMobile = "", linkHasParentMobileDefault = "";
+
+    String linkHasChildrenDesktop = "", linkHasChildrenDesktopDefault = "";
+    String linkHasChildrenMobile = "", linkHasChildrenMobileDefault = "";
+
+	String debugPath = "";
+
     GoogleCountryCode defaultCountry = GoogleCountryCode.__;
     String defaultDatacenter = null;
     GoogleDevice defaultDevice = GoogleDevice.DESKTOP;
@@ -75,7 +92,175 @@ public class GoogleSettings {
     public void setFetchRetry(int fetchRetry) {
         this.fetchRetry = fetchRetry;
     }
-    
+
+    public String getUADesktop() {
+        return uaDesktop;
+    }
+
+    public void setUADesktop(String uaDesktop) {
+        this.uaDesktop = uaDesktop;
+    }
+
+    public String getUADesktopDefault() {
+        return uaDesktopDefault;
+    }
+
+    public void setUADesktopDefault(String uaDesktopDefault) {
+        this.uaDesktopDefault = uaDesktopDefault;
+    }
+
+    public String getUAMobile() {
+        return uaMobile;
+    }
+
+    public void setUAMobile(String uaMobile) {
+        this.uaMobile = uaMobile;
+    }
+
+    public String getUAMobileDefault() {
+        return uaMobileDefault;
+    }
+
+    public void setUAMobileDefault(String uaMobileDefault) {
+        this.uaMobileDefault = uaMobileDefault;
+    }
+
+    public String getElementsRemoveDesktop() {
+        return elementsRemoveDesktop;
+    }
+
+    public void setElementsRemoveDesktop(String elementsRemoveDesktop) {
+        this.elementsRemoveDesktop = elementsRemoveDesktop;
+    }
+
+    public String getElementsRemoveMobile() {
+        return elementsRemoveMobile;
+    }
+
+    public void setElementsRemoveMobile(String elementsRemoveMobile) {
+        this.elementsRemoveMobile = elementsRemoveMobile;
+    }
+
+    public String getElementsRemoveDesktopDefault() {
+        return elementsRemoveDesktopDefault;
+    }
+
+    public void setElementsRemoveDesktopDefault(String elementsRemoveDesktopDefault) {
+        this.elementsRemoveDesktopDefault = elementsRemoveDesktopDefault;
+    }
+
+    public String getElementsRemoveMobileDefault() {
+        return elementsRemoveMobileDefault;
+    }
+
+    public void setElementsRemoveMobileDefault(String elementsRemoveMobileDefault) {
+        this.elementsRemoveMobileDefault = elementsRemoveMobileDefault;
+    }
+
+    public String getLinksParseDesktop() {
+        return linksParseDesktop;
+    }
+
+    public void setLinksParseDesktop(String linksParseDesktop) {
+        this.linksParseDesktop = linksParseDesktop;
+    }
+
+    public String getLinksParseMobile() {
+        return linksParseMobile;
+    }
+
+    public void setLinksParseMobile(String linksParseMobile) {
+        this.linksParseMobile = linksParseMobile;
+    }
+
+    public String getLinksParseDesktopDefault() {
+        return linksParseDesktopDefault;
+    }
+
+    public void setLinksParseDesktopDefault(String linksParseDesktopDefault) {
+        this.linksParseDesktopDefault = linksParseDesktopDefault;
+    }
+
+    public String getLinksParseMobileDefault() {
+        return linksParseMobileDefault;
+    }
+
+    public void setLinksParseMobileDefault(String linksParseMobileDefault) {
+        this.linksParseMobileDefault = linksParseMobileDefault;
+    }
+
+    public String getLinkHasParentDesktop() {
+        return linkHasParentDesktop;
+    }
+
+    public void setLinkHasParentDesktop(String linkHasParentDesktop) {
+        this.linkHasParentDesktop = linkHasParentDesktop;
+    }
+
+    public String getLinkHasParentMobile() {
+        return linkHasParentMobile;
+    }
+
+    public void setLinkHasParentMobile(String linkHasParentMobile) {
+        this.linkHasParentMobile = linkHasParentMobile;
+    }
+
+    public String getLinkHasParentDesktopDefault() {
+        return linkHasParentDesktopDefault;
+    }
+
+    public void setLinkHasParentDesktopDefault(String linkHasParentDesktopDefault) {
+        this.linkHasParentDesktopDefault = linkHasParentDesktopDefault;
+    }
+
+    public String getLinkHasParentMobileDefault() {
+        return linkHasParentMobileDefault;
+    }
+
+    public void setLinkHasParentMobileDefault(String linkHasParentMobileDefault) {
+        this.linkHasParentMobileDefault = linkHasParentMobileDefault;
+    }
+
+    public String getLinkHasChildrenDesktop() {
+        return linkHasChildrenDesktop;
+    }
+
+    public void setLinkHasChildrenDesktop(String linkHasChildrenDesktop) {
+        this.linkHasChildrenDesktop = linkHasChildrenDesktop;
+    }
+
+    public String getLinkHasChildrenMobile() {
+        return linkHasChildrenMobile;
+    }
+
+    public void setLinkHasChildrenMobile(String linkHasChildrenMobile) {
+        this.linkHasChildrenMobile = linkHasChildrenMobile;
+    }
+
+    public String getLinkHasChildrenDesktopDefault() {
+        return linkHasChildrenDesktopDefault;
+    }
+
+    public void setLinkHasChildrenDesktopDefault(String linkHasChildrenDesktopDefault) {
+        this.linkHasChildrenDesktopDefault = linkHasChildrenDesktopDefault;
+    }
+
+    public String getLinkHasChildrenMobileDefault() {
+        return linkHasChildrenMobileDefault;
+    }
+
+    public void setLinkHasChildrenMobileDefault(String linkHasChildrenMobileDefault) {
+        this.linkHasChildrenMobileDefault = linkHasChildrenMobileDefault;
+    }
+
+    public String getDebugPath() {
+        return debugPath;
+    }
+
+    public void setDebugPath(String debugPath) {
+        this.debugPath = debugPath;
+    }
+
     // search
 
     public GoogleCountryCode getDefaultCountry() {

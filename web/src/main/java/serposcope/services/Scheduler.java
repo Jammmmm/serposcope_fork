@@ -38,6 +38,8 @@ public class Scheduler {
     
     @Schedule(delay = 6, initialDelay = 0, timeUnit = TimeUnit.HOURS)
     public void checkForUpdate() throws UnsupportedEncodingException{
+		if (true) { return; }
+
         if(!props.isProd()){
             return;
         }
@@ -63,6 +65,7 @@ public class Scheduler {
     }
     
     public boolean hasNewVersion(){
+		if (true) { return false; }
         return lastVersion != null && lastVersion.compareTo(Version.CURRENT) > 0;
     }
     

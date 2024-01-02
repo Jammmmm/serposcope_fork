@@ -49,7 +49,7 @@ import ninja.session.FlashScope;
 import ninja.utils.ResponseStreams;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import serposcope.controllers.GroupController;
@@ -607,7 +607,7 @@ public class GoogleGroupController extends GoogleController {
         }
 
         event.setTitle(title);
-        event.setDescription(Jsoup.clean(description == null ? "" : description, Whitelist.basic()));
+        event.setDescription(Jsoup.clean(description == null ? "" : description, Safelist.basic()));
 
         if (!baseDB.event.insert(event)) {
             flash.error("error.internalError");

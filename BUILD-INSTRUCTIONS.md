@@ -36,10 +36,29 @@ mvn ninja:run \
 
 To build the package for production (compiled javascripts and single jar) : 
 
-`mvn -Dsinglejar=true -Dminify=true clean install`
+`mvn -Dsinglejar=true -Dminify=true -DskipTests clean install`
 
+Assuming no errors occurred, the .jar file will be located at **web\target\serposcope.jar**.
+
+### UPGRADING
+
+This fork does not contain installation files, so install from 2.15.0 (if required) and then do the following to upgrade.
+
+* If Serposcope is already running, stop it. For example:
+
+`systemctl stop serposcope`
+
+* Overwrite the original .jar file with the newly built file. For example:
+
+`cp serposcope.jar /usr/share/serposcope/serposcope.jar`
+
+* Restart Serposcope. For example:
+
+`systemctl start serposcope`
 
 ## RUNNING INTEGRATION TESTS
+
+**AS OF 2.16.0, TESTS ARE NO LONGER USED BUT ARE BEING KEPT HERE FOR POSTERITY**
 
 To run integration tests : 
 

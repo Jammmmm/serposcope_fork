@@ -20,6 +20,7 @@ public class ScrapClientFactoryImpl implements ScrapClientFactory {
     public ScrapClient get(String defaultUserAgent, int timeoutMS) {
         ScrapClient client = new ScrapClient();
         client.setUseragent(defaultUserAgent);
+        client.setUseragentType("");
         client.setTimeout(timeoutMS);
         client.setInsecureSSL(true);
         return client;

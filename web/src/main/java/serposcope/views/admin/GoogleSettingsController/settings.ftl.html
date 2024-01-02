@@ -40,13 +40,139 @@
                     <label for="maxThreads" >${i18n("admin.google.maxThreads")}</label>
                     <input type="number" id="maxThreads" class="form-control width80" name="maxThreads" value="${options.getMaxThreads()}" >
                     <span class="help-block">${i18n("admin.google.maxThreadsHelp")}</span>
-                </div>                
+                </div>
                 
                 <div class="form-group" >
                     <label for="fetchRetry" >${i18n("admin.google.fetchRetry")}</label>
                     <input type="number" id="fetchRetry" class="form-control width80" name="fetchRetry" value="${options.getFetchRetry()}" >
                     <span class="help-block">${i18n("admin.google.fetchRetryHelp")}</span>
-                </div>                
+                </div>
+
+                <div class="form-group" >
+                    <label for="uaDesktop" >${i18n("admin.google.userAgentDesktop")}</label>
+                    <select name="uaDesktopDefault" class="form-control width200 inline-block" id="uaDesktopDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#uaDesktop">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#uaDesktop"<#if options.getUADesktopDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="uaDesktop" class="form-control" name="uaDesktop" value="${options.getUADesktop()}" >
+                    <span class="help-block">${i18n("admin.google.userAgentDesktopHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="uaMobile" >${i18n("admin.google.userAgentMobile")}</label>
+                    <select name="uaMobileDefault" class="form-control width200 inline-block" id="uaMobileDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#uaMobile">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#uaMobile"<#if options.getUAMobileDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="uaMobile" class="form-control" name="uaMobile" value="${options.getUAMobile()}" >
+                    <span class="help-block">${i18n("admin.google.userAgentMobileHelp")}</span>
+                </div>
+
+                <hr/>
+                <h2 class="styled-h2">${i18n("admin.google.htmlOptions")}</h2>
+                <hr/>
+
+                <div class="form-group" >
+                    <label for="elementsRemoveDesktop" >${i18n("label.desktop")}: ${i18n("admin.google.elementsRemove")}</label>
+                    <select name="elementsRemoveDesktopDefault" class="form-control width200 inline-block" id="elementsRemoveDesktopDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#elementsRemoveDesktop">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#elementsRemoveDesktop"<#if options.getElementsRemoveDesktopDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="elementsRemoveDesktop" class="form-control" name="elementsRemoveDesktop" value="${options.getElementsRemoveDesktop()}" >
+                    <span class="help-block">${i18n("admin.google.elementsRemoveHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="elementsRemoveMobile" >${i18n("label.mobile")}: ${i18n("admin.google.elementsRemove")}</label>
+                    <select name="elementsRemoveMobileDefault" class="form-control width200 inline-block" id="elementsRemoveMobileDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#elementsRemoveMobile">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#elementsRemoveMobile"<#if options.getElementsRemoveMobileDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="elementsRemoveMobile" class="form-control" name="elementsRemoveMobile" value="${options.getElementsRemoveMobile()}" >
+                    <span class="help-block">${i18n("admin.google.elementsRemoveHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="linksParseDesktop" >${i18n("label.desktop")}: ${i18n("admin.google.linksParse")}</label>
+                    <select name="linksParseDesktopDefault" class="form-control width200 inline-block" id="linksParseDesktopDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#linksParseDesktop">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#linksParseDesktop"<#if options.getLinksParseDesktopDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="linksParseDesktop" class="form-control" name="linksParseDesktop" value="${options.getLinksParseDesktop()}" >
+                    <span class="help-block">${i18n("admin.google.linksParseHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="linksParseMobile" >${i18n("label.mobile")}: ${i18n("admin.google.linksParse")}</label>
+                    <select name="linksParseMobileDefault" class="form-control width200 inline-block" id="linksParseMobileDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#linksParseMobile">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#linksParseMobile"<#if options.getLinksParseMobileDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="linksParseMobile" class="form-control" name="linksParseMobile" value="${options.getLinksParseMobile()}" >
+                    <span class="help-block">${i18n("admin.google.linksParseHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="linkHasParentDesktop" >${i18n("label.desktop")}: ${i18n("admin.google.linkHasParent")}</label>
+                    <select name="linkHasParentDesktopDefault" class="form-control width200 inline-block" id="linkHasParentDesktopDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#linkHasParentDesktop">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#linkHasParentDesktop"<#if options.getLinkHasParentDesktopDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="linkHasParentDesktop" class="form-control" name="linkHasParentDesktop" value="${options.getLinkHasParentDesktop()}" >
+                    <span class="help-block">${i18n("admin.google.linkHasParentHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="linkHasParentMobile" >${i18n("label.mobile")}: ${i18n("admin.google.linkHasParent")}</label>
+                    <select name="linkHasParentMobileDefault" class="form-control width200 inline-block" id="linkHasParentMobileDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#linkHasParentMobile">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#linkHasParentMobile"<#if options.getLinkHasParentMobileDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="linkHasParentMobile" class="form-control" name="linkHasParentMobile" value="${options.getLinkHasParentMobile()}" >
+                    <span class="help-block">${i18n("admin.google.linkHasParentHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="linkHasChildrenDesktop" >${i18n("label.desktop")}: ${i18n("admin.google.linkHasChildren")}</label>
+                    <select name="linkHasChildrenDesktopDefault" class="form-control width200 inline-block" id="linkHasChildrenDesktopDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#linkHasChildrenDesktop">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#linkHasChildrenDesktop"<#if options.getLinkHasChildrenDesktopDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="linkHasChildrenDesktop" class="form-control" name="linkHasChildrenDesktop" value="${options.getLinkHasChildrenDesktop()}" >
+                    <span class="help-block">${i18n("admin.google.linkHasChildrenHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="linkHasChildrenMobile" >${i18n("label.mobile")}: ${i18n("admin.google.linkHasChildren")}</label>
+                    <select name="linkHasChildrenMobileDefault" class="form-control width200 inline-block" id="linkHasChildrenMobileDefault" onchange="javascript:return serposcope.theme.functions.toggleElementStatus (this);">
+						<option value="default" data-toggle="ro" data-toggleel="#linkHasChildrenMobile">Use Default</option>
+						<option value="value" data-toggle="" data-toggleel="#linkHasChildrenMobile"<#if options.getLinkHasChildrenMobileDefault() == "value" > selected="selected"</#if>>Use Value Below</option>
+					</select>
+                    <input type="text" id="linkHasChildrenMobile" class="form-control" name="linkHasChildrenMobile" value="${options.getLinkHasChildrenMobile()}" >
+                    <span class="help-block">${i18n("admin.google.linkHasChildrenHelp")}</span>
+                </div>
+
+                <div class="form-group" >
+                    <label for="debugPath" >${i18n("admin.google.debugPath")}</label>
+                    <input type="text" id="debugPath" class="form-control" name="debugPath" value="${options.getDebugPath()}" >
+                    <span class="help-block">${i18n("admin.google.debugPathHelp")}</span>
+                </div>
+
+                <script type="text/javascript" language="Javascript">
+					document.addEventListener ("DOMContentLoaded", function ()
+					{
+						document.getElementById ('uaDesktopDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('uaMobileDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('elementsRemoveDesktopDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('elementsRemoveMobileDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('linksParseDesktopDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('linksParseMobileDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('linkHasParentDesktopDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('linkHasParentMobileDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('linkHasChildrenDesktopDefault').dispatchEvent (new Event ("change"));
+						document.getElementById ('linkHasChildrenMobileDefault').dispatchEvent (new Event ("change"));
+					});
+				</script>
 
                 <hr/>
                 <h2 class="styled-h2">${i18n("admin.google.defaultSearchOptions")}</h2>

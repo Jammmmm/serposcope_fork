@@ -9,9 +9,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.serphacker.serposcope</groupId>
     <artifactId>serposcope</artifactId>
-    <version>2.15.0</version>
+    <version>2.16.0</version>
     <packaging>pom</packaging>
-    <name>serposcope</name>
+    <name>serposcope fork</name>
     <description>serposcope SEO rank checker</description>
     <url>https://serposcope.serphacker.com/</url>
     <modules>
@@ -149,5 +149,4 @@
             </build>
         </profile>
     </profiles>
-    
 </project>

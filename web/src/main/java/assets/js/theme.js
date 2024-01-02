@@ -12,7 +12,19 @@ serposcope.theme = function () {
 
     var topOffset = 50;
     var availableHeight = 0;
-    
+
+	var toggleElementStatus = function (selectel)
+	{
+		if (selectel !== '' && $(selectel).length == 1)
+		{
+			var type = $(selectel).find ('option:selected').attr ('data-toggle');
+			var el = $(selectel).find ('option:selected').attr ('data-toggleel');
+			if (type == 'ro') { $(el).attr ('readonly', 'readonly'); }
+			else if (type == '') { $(el).removeAttr ('readonly'); }
+		}
+		return false;
+	};
+
     var setAvailableHeight = function () {
         height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
         availableHeight = height - topOffset;
@@ -93,7 +105,8 @@ serposcope.theme = function () {
     var oPublic = {
         topOffset: function() {return topOffset;},
         availableHeight: function() {return availableHeight;},
-        setup: setup
+        setup: setup,
+        functions: {'toggleElementStatus':toggleElementStatus}
     };
 
     return oPublic;

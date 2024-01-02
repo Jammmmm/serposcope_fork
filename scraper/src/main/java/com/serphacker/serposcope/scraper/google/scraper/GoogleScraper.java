@@ -22,6 +22,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -58,8 +62,8 @@ public class GoogleScraper {
         CONSENT_COOKIE.setAttribute(ClientCookie.DOMAIN_ATTR, ".google.com");
     }
 
-    public final static String DEFAULT_DESKTOP_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0";
-    public final static String DEFAULT_SMARTPHONE_UA = "Mozilla/5.0 (Android 7.0; Mobile; rv:59.0) Gecko/59.0 Firefox/59.0 ";
+    public final static String DEFAULT_DESKTOP_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0";
+    public final static String DEFAULT_SMARTPHONE_UA = "Mozilla/5.0 (Android 14; Mobile; rv:109.0) Gecko/121.0 Firefox/121.0";
 
     private static final Logger LOG = LoggerFactory.getLogger(GoogleScraper.class);
 
@@ -95,12 +99,12 @@ public class GoogleScraper {
 
             Status status = null;
             for (int retry = 0; retry < maxRetry; retry++) {
-
-                LOG.debug("GET {} via {} try {}", url, http.getProxy() == null ? new DirectNoProxy() : http.getProxy(), retry+1);
+                LOG.debug("GET {} via {} with user-agent {} - try {}", url, http.getProxy() == null ? new DirectNoProxy() : http.getProxy(), http.getUseragent (), retry+1);
 
                 status = downloadSerp(url, referrer, search, retry);
+                search.doRandomPagePause (true);
                 if(status == Status.OK){
-                    status = parseSerp(urls);
+                    status = parseSerp(search, urls);
                     if(status == Status.OK){
                         break;
                     }
@@ -122,28 +126,30 @@ public class GoogleScraper {
             if(!hasNextPage()){
                 break;
             }
-
-            long pause = search.getRandomPagePauseMS();
-            if(pause > 0){
-                try {
-                    LOG.trace("sleeping {} milliseconds", pause);
-                    Thread.sleep(pause);
-                } catch(InterruptedException ex){
-                    throw ex;
-                }
-            }
         }
         return new GoogleScrapResult(Status.OK, urls, captchas, resultsNumber);
     }
 
     protected void prepareHttpClient(GoogleScrapSearch search){
+		String ua = "";
+		String user_ua = "";
 
-        switch(search.getDevice()){
+		http.setUseragentType ("");
+
+        switch(search.getDevice()) {
             case DESKTOP:
-                http.setUseragent(DEFAULT_DESKTOP_UA);
+            	// If a user has entered a custom desktop user agent, use it instead
+				user_ua = search.getUADesktop ().trim ();
+				ua = (search.getUADesktopDefault ().trim ().equals ("value")) ? user_ua : DEFAULT_DESKTOP_UA;
+                http.setUseragent(ua);
+                http.setUseragentType ("desktop");
                 break;
             case SMARTPHONE:
-                http.setUseragent(DEFAULT_SMARTPHONE_UA);
+            	// If a user has entered a custom mobile user agent, use it instead
+				user_ua = search.getUAMobile ().trim ();
+				ua = (search.getUAMobileDefault ().trim ().equals ("value")) ? user_ua : DEFAULT_SMARTPHONE_UA;
+                http.setUseragent(ua);
+                http.setUseragentType ("mobile");
                 break;
         }
 
@@ -188,7 +194,7 @@ public class GoogleScraper {
         return Status.ERROR_NETWORK;
     }
 
-    protected Status parseSerp(List<String> urls){
+    protected Status parseSerp(GoogleScrapSearch search, List<String> urls){
         String html = http.getContentAsString();
         if(html == null || html.isEmpty()){
             return Status.ERROR_NETWORK;
@@ -199,39 +205,14 @@ public class GoogleScraper {
             return Status.ERROR_NETWORK;
         }
 
-        Element resDiv = lastSerpHtml.getElementById("res");
-        if(resDiv != null){
-            return parseSerpLayoutRes(resDiv, urls);
-        }
-
-        final Element mainDiv = lastSerpHtml.getElementById("main");
-        if(mainDiv != null) {
-            return parseSerpLayoutMain(mainDiv, urls);
+		Element elDiv = lastSerpHtml.getElementsByTag("body").first();
+        if (elDiv != null)
+        {
+			return parseSerpLayout (search, elDiv, urls);
         }
 
         return Status.ERROR_PARSING;
     }
-
-    protected Status parseSerpLayoutRes(Element resElement, List<String> urls) {
-
-        Elements h3Elts = resElement.select("a > h3");
-        if(h3Elts.isEmpty()) {
-            return parseSerpLayoutResLegacy(resElement, urls);
-        }
-
-        for (Element h3Elt : h3Elts) {
-
-            String link = extractLink(h3Elt.parent());
-            if(link == null){
-                continue;
-            }
-
-            urls.add(link);
-        }
-
-        return Status.OK;
-    }
-
 
     protected Status parseSerpLayoutResLegacy(Element resElement, List<String> urls) {
 
@@ -254,30 +235,180 @@ public class GoogleScraper {
         return Status.OK;
     }
 
-    protected Status parseSerpLayoutMain(Element divElement, List<String> urls) {
+    protected Status parseSerpLayout (GoogleScrapSearch search, Element divElement, List<String> urls) {
 
-        final Elements links = divElement.select(
-            "#main > div > div:first-child > div:first-child > a:first-child," +
-                "#main > div > div:first-child > a:first-child"
-        );
-        if(links.isEmpty()) {
-            return parseSerpLayoutResLegacy(divElement, urls);
-        }
+		String debugPath = search.getDebugPath ();
+		String timestamp = DateTimeFormatter.ofPattern ("yyyy-MM-dd HH-mm-ss").format (LocalDateTime.now ());
+		String randomNumber = String.valueOf (Math.round ((Math.random () * 1000 + 1)));
+		String filesystemKeyword = search.getKeyword ().replaceAll ("[^A-Za-z0-9]", "");
+		String useragentType = http.getUseragentType ().toLowerCase ().trim ();
+		String debugBaseFilename = timestamp + "_" + randomNumber + "_" + filesystemKeyword + "_" + useragentType;
 
-        for (Element link : links) {
-            if(!link.children().isEmpty() && "img".equals(link.child(0).tagName())) {
-                continue;
-            }
+		// Dump the elements to a file, if required
+		if (!debugPath.equals (""))
+		{
+			debugDump (debugPath, true, debugBaseFilename + "_before.html", divElement.toString ());
+		}
 
-            String url = extractLink(link);
-            if(url == null) {
-                continue;
-            }
+		// Remove the useless elements
+		removeUselessElements (search, divElement, useragentType, debugPath, debugBaseFilename + "_details.txt");
 
-            urls.add(url);
-        }
+		// Dump the elements to a file after removing useless elements, if required
+		if (!debugPath.equals (""))
+		{
+			debugDump (debugPath, true, debugBaseFilename + "_after.html", divElement.toString ());
+		}
+
+
+		// Retrieve the options for mobile or desktop
+		String selectors = "", user_selectors = "", selectors_tmp = "";
+		String parent = "", user_parent = "", parent_tmp = "";
+		String children = "", user_children = "", children_tmp = "";
+		if (useragentType.equals ("mobile"))
+		{
+			// Set the mobile selectors
+			selectors = "#main > div > div:nth-of-type(1) a:nth-of-type(1)";
+			parent = ".egMi0,.kCrYT";
+			children = "cite,h3";
+
+			// If a user has entered custom remove search selectors, use them instead
+			user_selectors = search.getLinksParseMobile ().trim ();
+			selectors_tmp = search.getLinksParseMobileDefault ().trim ();
+
+			// If a user has entered custom parent CSS selectors, use them instead
+			user_parent = search.getLinkHasParentMobile ().trim ();
+			parent_tmp = search.getLinkHasParentMobileDefault ().trim ();
+
+			// If a user has entered custom children CSS selectors, use them instead
+			user_children = search.getLinkHasChildrenMobile ().trim ();
+			children_tmp = search.getLinkHasChildrenMobileDefault ().trim ();
+		}
+		else if (useragentType.equals ("desktop"))
+		{
+			// Set the desktop selectors
+			selectors = "a[jsname*=\"UWckNb\"]";
+			parent = "span[jscontroller=\"msmzHf\"]";
+			children = "cite,h3";
+
+			// If a user has entered custom remove search selectors, use them instead
+			user_selectors = search.getLinksParseDesktop ().trim ();
+			selectors_tmp = search.getLinksParseDesktopDefault ().trim ();
+
+			// If a user has entered custom parent CSS selectors, use them instead
+			user_parent = search.getLinkHasParentDesktop ().trim ();
+			parent_tmp = search.getLinkHasParentDesktopDefault ().trim ();
+
+			// If a user has entered custom children CSS selectors, use them instead
+			user_children = search.getLinkHasChildrenDesktop ().trim ();
+			children_tmp = search.getLinkHasChildrenDesktopDefault ().trim ();
+		}
+
+		// Sanitize all options
+		if (!user_selectors.equals ("") && selectors_tmp.equals ("value")) { selectors = user_selectors.replaceAll ("\"", "\\\""); }
+		if (!user_parent.equals ("") && parent_tmp.equals ("value")) { parent = user_parent.replaceAll ("\"", "\\\""); }
+		if (!user_children.equals ("") && children_tmp.equals ("value")) { children = user_children.replaceAll ("\"", "\\\""); }
+
+		// Dump the options to a file, if required
+		if (!debugPath.equals (""))
+		{
+			debugDump (debugPath, true, debugBaseFilename + "_details.txt", "selectors: " + selectors + "\nparent: " + parent + "\nchildren: " + children + "\n");
+		}
+
+		// Check if any selectors have been provided
+		if (!selectors.equals (""))
+		{
+			// Retrieve the links for the given user agent type
+			Elements links = divElement.select(selectors);
+			if(links.isEmpty()) {
+				return parseSerpLayoutResLegacy(divElement, urls);
+			}
+
+			for (Element link : links)
+			{
+				if(!link.children().isEmpty() && "img".equals(link.child(0).tagName())) {
+					continue;
+				}
+
+				
+				// Check if the link has the required parents available
+				if (!parent.equals ("") && link.closest (parent) == null)
+				{
+					continue;
+				}
+
+				// Check if the link has the required children available
+				if (!children.equals ("") && link.selectFirst (children) == null)
+				{
+					continue;
+				}
+
+				String url = extractLink(link);
+				if(url == null) {
+					continue;
+				}
+
+				String text = extractText(link);
+
+				// Dump the link to a file, if required
+				if (!debugPath.equals (""))
+				{
+					debugDump (debugPath, true, debugBaseFilename + "_details.txt", "URL: " + url + " - Text: " + text.replaceAll ("[\r\n]", "") + "\n");
+				}
+
+				urls.add(url);
+			}
+		}
 
         return Status.OK;
+    }
+
+    protected Element removeUselessElements (GoogleScrapSearch search, Element divElement, String useragentType, String debugPath, String debugFilename)
+    {
+		String useless = "", user_useless = "", useless_tmp = "";
+		if (useragentType.equals ("mobile"))
+		{
+			// Set the mobile selectors
+			useless = ".qxDOhb,.duf-h,.xpc,.idg8be,.Q71vJc,.BNeawe,.xpx,.X7NTVe," +
+			"a[href*=\"maps.google.com\"],.KP7LCb,.Pg70bf,.wEsjbd,.bz1lBb,.cOl4Id,.nBDE1b,.G5eFlf," + 
+			"footer,.Gx5Zad>.kCrYT:nth-of-type(2),a[href^=\"/search\\?\"]";
+
+			// If a user has entered custom remove CSS selectors, use them instead
+			user_useless = search.getElementsRemoveMobile ().trim ();
+			useless_tmp = search.getElementsRemoveMobileDefault ().trim ();
+		}
+		else if (useragentType.equals ("desktop"))
+		{
+			// Set the desktop selectors
+			useless = ".cUnQKe,#rhs,.DhGrzc,.BDXcec,.mheepd,#appbar,#botstuff," + 
+			".iHxmLe,.oIk2Cb,.uVMCKf,.yG4QQe,.TBC9ub,.JNkvid,.uEierd,#taw,.xvfwl,.HiHjCd,.SP6Rje,.YkS8D,.lhLbod," + 
+			".gEBHYd,.XqFnDf,.PAq55d,a[href*=\"maps.google.com\"],#easter-egg,#searchform,.Q3DXx,.gke0pe," + 
+			".yIbDgf,#sfcnt,.rfiSsc,#hdtbMenus,.fG8Fp,.uo4vr,.lDFEO,.XmmGVd,.iUh30,.LnCrMe,#sfooter,#bfoot," + 
+			"#lfootercc,.WZH4jc,.w7LJsc,a[href^=\"/search\\?\"]";
+
+			// If a user has entered custom remove CSS selectors, use them instead
+			user_useless = search.getElementsRemoveDesktop ().trim ();
+			useless_tmp = search.getElementsRemoveDesktopDefault ().trim ();
+		}
+
+		// Sanitize all options
+		if (!user_useless.equals ("") && useless_tmp.equals ("value")) { useless = user_useless.replaceAll ("\"", "\\\""); }
+
+		// Remove all useless elements, if at least one selector has been provided
+		if (!useless.equals (""))
+		{
+			// Dump the options to a file, if required
+			if (!debugPath.equals (""))
+			{
+				debugDump (debugPath, true, debugFilename, "remove elements: " + useless + "\n");
+			}
+
+			for (Element el : divElement.select (useless))
+			{
+				el.remove ();
+			}
+		}
+
+        return divElement;
     }
 
     protected long parseResultsNumberOnFirstPage(){
@@ -356,6 +487,14 @@ public class GoogleScraper {
         }
 
         return null;
+    }
+
+    protected String extractText(Element element){
+        if(element == null){
+            return null;
+        }
+
+        return element.text ();
     }
 
     protected boolean hasNextPage(){
@@ -583,13 +722,38 @@ public class GoogleScraper {
         return Status.ERROR_CAPTCHA_INCORRECT;
     }
 
-    protected void debugDump(String name, String data){
+    protected void debugDump(String path, boolean appendTimestamp, String name, String data){
         if(name == null || data == null){
             return;
         }
-        File dumpFile = new File(System.getProperty("java.io.tmpdir") + File.separator + name + ".txt");
+
+		// Set a default path if a valid one has not been given
+        if (path == null || path.equals ("") || !Files.isDirectory (Paths.get (path)))
+        {
+			path = System.getProperty ("java.io.tmpdir");
+		}
+
+		// Remove any trailing slashes from the path
+		if (path.endsWith (File.separator))
+		{
+			path = path.substring (0, path.length () - File.separator.length ());
+		}
+
+		// Create a timestamped directory, if required
+		if (appendTimestamp == true)
+		{
+			String timestamp = DateTimeFormatter.ofPattern ("yyyy-MM-dd").format (LocalDateTime.now ());
+			try
+			{
+				Files.createDirectories (Paths.get (path + File.separator + timestamp));
+				path = path + File.separator + timestamp;	// Only set the new path if it could be successfully created
+			}
+			catch (Exception ex) { }
+		}
+
+        File dumpFile = new File(path + File.separator + name);
         try {
-            Files.write(dumpFile.toPath(), data.getBytes());
+            Files.write(dumpFile.toPath(), data.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         }catch(Exception ex){
         }
         LOG.debug("debug dump created in {}", dumpFile.getAbsolutePath());

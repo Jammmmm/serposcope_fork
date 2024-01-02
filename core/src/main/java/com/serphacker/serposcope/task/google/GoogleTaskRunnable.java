@@ -137,7 +137,34 @@ public class GoogleTaskRunnable implements Runnable {
         scrapSearch.setPagePauseMS(options.getMinPauseBetweenPageSec()*1000l, options.getMaxPauseBetweenPageSec()*1000l);
         scrapSearch.setPages(options.getPages());
         scrapSearch.setResultPerPage(options.getResultPerPage());
-        
+
+		scrapSearch.setUADesktop(options.getUADesktop ().trim ());
+		scrapSearch.setUADesktopDefault(options.getUADesktopDefault ().trim ());
+		scrapSearch.setUAMobile(options.getUAMobile().trim ());
+		scrapSearch.setUAMobileDefault(options.getUAMobileDefault().trim ());
+
+		scrapSearch.setElementsRemoveDesktop(options.getElementsRemoveDesktop ().trim ());
+		scrapSearch.setElementsRemoveMobile(options.getElementsRemoveMobile ().trim ());
+		scrapSearch.setElementsRemoveDesktopDefault(options.getElementsRemoveDesktopDefault ().trim ());
+		scrapSearch.setElementsRemoveMobileDefault(options.getElementsRemoveMobileDefault ().trim ());
+
+		scrapSearch.setLinksParseDesktop(options.getLinksParseDesktop().trim ());
+		scrapSearch.setLinksParseMobile(options.getLinksParseMobile().trim ());
+		scrapSearch.setLinksParseDesktopDefault(options.getLinksParseDesktopDefault().trim ());
+		scrapSearch.setLinksParseMobileDefault(options.getLinksParseMobileDefault().trim ());
+
+		scrapSearch.setLinkHasParentDesktop(options.getLinkHasParentDesktop().trim ());
+		scrapSearch.setLinkHasParentMobile(options.getLinkHasParentMobile().trim ());
+		scrapSearch.setLinkHasParentDesktopDefault(options.getLinkHasParentDesktopDefault().trim ());
+		scrapSearch.setLinkHasParentMobileDefault(options.getLinkHasParentMobileDefault().trim ());
+
+		scrapSearch.setLinkHasChildrenDesktop(options.getLinkHasChildrenDesktop().trim ());
+		scrapSearch.setLinkHasChildrenMobile(options.getLinkHasChildrenMobile().trim ());
+		scrapSearch.setLinkHasChildrenDesktopDefault(options.getLinkHasChildrenDesktopDefault().trim ());
+		scrapSearch.setLinkHasChildrenMobileDefault(options.getLinkHasChildrenMobileDefault().trim ());
+
+		scrapSearch.setDebugPath(options.getDebugPath ());
+
         scrapSearch.setCustomParameters(search.getCustomParameters());
         scrapSearch.setDatacenter(search.getDatacenter());
         scrapSearch.setDevice(search.getDevice());
