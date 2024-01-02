@@ -1,0 +1,87 @@
+Query Selectors
+===============
+Mobile
+------
+Remove People Also ask
+.qxDOhb,.duf-h
+
+Remove summary
+.xpc,.idg8be
+
+Remove People Also search for / Related searches
+.Q71vJc
+
+Remove all other links (such as sub-links for a main link)
+.BNeawe,.xpx
+
+Remove maps
+.X7NTVe,a[href*="maps.google.com"]
+
+Remove menu, search tools and search box
+.KP7LCb,.Pg70bf,.wEsjbd,.bz1lBb,.cOl4Id
+
+Remove footer and links in footer
+.nBDE1b,.G5eFlf,footer
+
+Remove the URL display, which will cause duplicates of links
+.Gx5Zad>.kCrYT:nth-of-type(2)
+(Maybe not .DnJfK because that gets rid of the h3)
+
+Remove Google specific links
+a[href^="/search\?"]
+
+All put together
+document.querySelectorAll ('.qxDOhb,.duf-h,.xpc,.idg8be,.Q71vJc,.BNeawe,.xpx,.X7NTVe,a[href*="maps.google.com"],.KP7LCb,.Pg70bf,.wEsjbd,.bz1lBb,.cOl4Id,.nBDE1b,.G5eFlf,footer,.Gx5Zad>.kCrYT:nth-of-type(2),a[href^="/search\?"]').forEach (function (el, i) { el.remove (); });
+
+Get links
+document.querySelectorAll ('#main > div > div:nth-of-type(1) a:nth-of-type(1)').forEach (function (el, i) { console.log (el.getAttribute ('href')); });
+
+
+Desktop
+-------
+Remove People also ask
+.cUnQKe
+
+Remove entire right hand side, which includes summary, etc.
+#rhs,.DhGrzc,.BDXcec,.mheepd
+
+Remove appbar and bot stuff
+#appbar,#botstuff
+
+Remove related searches, videos and images
+.iHxmLe,.oIk2Cb,.uVMCKf,.yG4QQe,.TBC9ub,.JNkvid 
+NOTE: Don't get rid of .ULSxyf or .EyBRub since that is sometimes used elsewhere as regular links.
+
+Remove sponsored links
+.uEierd,#taw
+
+Remove all other links (such as sub-links for a main link, "View full list",Quora links,etc)
+.xvfwl,.HiHjCd,.SP6Rje,.YkS8D,.lhLbod,.gEBHYd,.XqFnDf
+
+Remove maps
+.PAq55d,a[href*="maps.google.com"]
+
+Remove menu, search tools and search box
+#easter-egg,#searchform,.Q3DXx,.gke0pe,.yIbDgf,#sfcnt,.rfiSsc,#hdtbMenus
+
+Remove ratings, etc.
+.fG8Fp,.uo4vr,.lDFEO,.XmmGVd
+
+Remove translate links
+.iUh30
+
+Remove the URL display, which will cause duplicates of links
+.LnCrMe
+
+Remove footer and links in footer
+#sfooter,#bfoot,#lfootercc,.WZH4jc,.w7LJsc
+
+Remove Google specific links
+a[href^="/search\?"]
+
+All put together
+document.querySelectorAll ('.cUnQKe,#rhs,.DhGrzc,.BDXcec,.mheepd,#appbar,#botstuff,.iHxmLe,.oIk2Cb,.uVMCKf,.yG4QQe,.TBC9ub,.JNkvid ,.uEierd,#taw,.xvfwl,.HiHjCd,.SP6Rje,.YkS8D,.lhLbod,.gEBHYd,.XqFnDf,.PAq55d,a[href*="maps.google.com"],#easter-egg,#searchform,.Q3DXx,.gke0pe,.yIbDgf,#sfcnt,.rfiSsc,#hdtbMenus,.fG8Fp,.uo4vr,.lDFEO,.XmmGVd,.iUh30,.LnCrMe,#sfooter,#bfoot,#lfootercc,.WZH4jc,.w7LJsc,a[href^="/search\?"]').forEach (function (el, i) { el.remove (); });
+
+Get links
+document.querySelectorAll ('#search a[jsname*="UWckNb"]').forEach (function (el, i) { console.log (el.getAttribute ('href')); });
+Alternative (after removing all extra stuff): document.querySelectorAll ('#search a:nth-of-type(1)').forEach (function (el, i) { console.log (el.getAttribute ('href')); });
