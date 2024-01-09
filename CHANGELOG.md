@@ -1,5 +1,8 @@
 # serposcope changelog
 
+## 2.16.1 - 2024-01-08
+* Added "Display Graphs" button onto groups table page to display a small ranking graph for each search.
+
 ## 2.16.0 - 2024-01-01
 * Forked from [original 2.x Serposcope](https://github.com/serphacker/serposcope). Although the code still refers to the project as Serposcope, the project has been renamed from "Serposcope" to "Serposcope Fork" to avoid confusion.
 * Updated version number from 2.15.0 to 2.16.0.

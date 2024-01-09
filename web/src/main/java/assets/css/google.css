@@ -223,6 +223,11 @@ MIT License (MIT) - Copyright (c) 2015 SERP Hacker https://serphacker.com/
     padding: 5px 5px;
 }
 
+.display-graphs {
+	position: absolute;
+	right: 15px;
+}
+
 #google-target-chart {
     border-width: 1px 1px 0px 1px;
     border-color: lightgray;

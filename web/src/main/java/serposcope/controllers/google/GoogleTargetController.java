@@ -580,6 +580,13 @@ public class GoogleTargetController extends GoogleController {
         LocalDate endDate,
         Writer writer
     ) throws IOException {
+		/* Format of each row
+			Index 0 = id
+			Index 1 = [keyword,country,device,local,data_center,custom_params]
+			Index 2 = [best_rank,best_rank_date,url]
+			Index 3 = rank or [rank,previous_rank (32767 if no rank),url]
+		*/
+
         writer.append("[[[-1, 0, 0, [");
         if (runs.isEmpty() || searches.isEmpty()) {
             writer.append("]]],[]]");

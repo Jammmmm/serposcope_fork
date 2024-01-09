@@ -12,7 +12,7 @@ serposcope.googleTargetControllerGrid = function () {
 
     var UNRANKED = 32767;
     var COL_WIDTH = 21;
-    
+
     var COL_ID = 0;
     var COL_SEARCH = 1;
     var COL_SEARCH_KEYWORD = 0;
@@ -84,6 +84,7 @@ serposcope.googleTargetControllerGrid = function () {
             $(".ajax-loader").remove();
             data = json[0];
             days = json[1];
+            setRankList (data);
             renderGrid();
         }).fail(function (err) {
             $(".ajax-loader").remove();
@@ -102,7 +103,7 @@ serposcope.googleTargetControllerGrid = function () {
         var columns = [{
                 id: "search",
                 name: '<div class="header-search" >&nbsp;&nbsp;Searches <i class="glyphicon glyphicon-sort" ></i></div>',
-                field: "id", width: 250, formatter: formatSearchCell, sortable: true
+                field: "id", width: 250+100, formatter: formatSearchCell, sortable: true	/* Additional 100 in width for graph which gets with generateRankListGraph () */
             }];
         for (var i = 0; i < days.length; i++) {
             var day = days[i];
@@ -315,9 +316,67 @@ serposcope.googleTargetControllerGrid = function () {
             '>' + rankText + '</div>';
     };
 
+	var setRankList = function (data)
+	{
+		var ranklist = {};
+
+		/* Get the list of ranks for the keywords */
+		if (typeof data != 'undefined' && data.length > 0)
+		{
+			for (var c = 0; c < data.length; c++)
+			{
+				if (typeof data[c] == 'object' && data[c].length > 0 && typeof data[c][0] != 'undefined')
+				{
+					var keywordid = parseInt (data[c][0]);
+					if (keywordid > 0 && typeof data[c][3] == 'object' && data[c][3].length > 0)
+					{
+						ranklist[keywordid] = [];
+
+						var rankvalue = 0;
+						data[c][3].forEach (function (i)
+						{
+							rankvalue = (typeof i == 'object' && i.length > 0 && typeof i[0] != 'undefined' && parseInt (i[0]) != UNRANKED && parseInt (i[0]) > 0) ? parseInt (i[0]) : 0;
+							ranklist[keywordid].push (rankvalue);
+						});
+					}
+				}
+			}
+		}
+
+		$('#rank_list').text (JSON.stringify (ranklist));
+	};
+
+	var generateRankListGraph = function ()
+	{
+		$('.sparkline_rank_graph').remove ();
+
+		if ($('#rank_list').text () !== '')
+		{
+			var rank_list = JSON.parse ($('#rank_list').text ());
+			$('#google-target-table-container .slick-viewport .slick-row').each (function ()
+			{
+				var href = $(this).find ($("a[href*='\/search\/'")).attr ('href');
+				if (typeof href != 'undefined' && href !== '')
+				{
+					var keywordid = href.match (/\/search\/([0-9]+)/);
+					if (keywordid != null && typeof keywordid != 'undefined' && keywordid.length > 0 && keywordid[1] != null && typeof keywordid[1] != 'undefined' && keywordid[1] !== '')
+					{
+						keywordid = parseInt (keywordid[1]);
+						if (keywordid > 0 && typeof rank_list[keywordid] != 'undefined' && rank_list[keywordid].length > 0)
+						{
+							$(this).find ('.slick-cell .text-left').prepend ($('<div class="inline sparkline_rank_graph" id="sparkline_graph_' + keywordid + '"></div>'));
+							$('#sparkline_graph_' + keywordid).sparkline (rank_list[keywordid],{width: "100"});
+						}
+					}
+				}
+			});
+		}
+	};
+
     var oPublic = {
         resize: resize,
-        render: render
+        render: render,
+        generateRankListGraph: generateRankListGraph
     };
 
     return oPublic;

@@ -40,7 +40,11 @@ To build the package for production (compiled javascripts and single jar) :
 
 Assuming no errors occurred, the .jar file will be located at **web\target\serposcope.jar**.
 
-### UPGRADING
+## ERRORS
+
+If you get errors such as *"package com.serphacker.serposcope.querybuilder does not exist"*, ensure you have run sqlcodegen (.sh or .bat) first.
+
+## UPGRADING
 
 This fork does not contain installation files, so install from 2.15.0 (if required) and then do the following to upgrade.
 

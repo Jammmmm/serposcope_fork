@@ -50,6 +50,10 @@ body {
     white-space: nowrap;
 }
 
+.displaynone {
+	display: none;
+}
+
 .inline {
     display: inline;
 }
